@@ -1,0 +1,78 @@
+
+openapi: 3.0.0
+info:
+  title: Digital Crime Management System - St. Kitts API
+  description: API specification for requesting and managing digital criminal records.
+  version: 1.0.0
+servers:
+  - url: https://api.stkitts-crimerecords.gov
+paths:
+  /records/apply:
+    post:
+      summary: Apply for a digital criminal record
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fullName:
+                  type: string
+                passportNumber:
+                  type: string
+                dateOfBirth:
+                  type: string
+                  format: date
+                purpose:
+                  type: string
+      responses:
+        '200':
+          description: Application received successfully
+  /records/status:
+    get:
+      summary: Check the status of a criminal record request
+      parameters:
+        - name: applicationId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Status returned
+  /records/download/{recordId}:
+    get:
+      summary: Download the approved criminal record
+      parameters:
+        - name: recordId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Criminal record PDF returned
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+  /identity/verify:
+    post:
+      summary: Verify identity with facial recognition
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                passportNumber:
+                  type: string
+                selfieImage:
+                  type: string
+                  format: byte
+      responses:
+        '200':
+          description: Identity verified
