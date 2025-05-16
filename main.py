@@ -68,9 +68,9 @@ conn.close()
 
 record_status = result[0] if result else "No Criminal Record Found"
 
-    digital_signature = "GovStack-DCRS-Signature-Verified"
-    issue_date = datetime.date.today().strftime("%Y-%m-%d")
-    filename = f"{passportNumber}_Certificate.pdf"
+digital_signature = "GovStack-DCRS-Signature-Verified"
+issue_date = datetime.date.today().strftime("%Y-%m-%d")
+filename = f"{passportNumber}_Certificate.pdf"
 
     pdf = FPDF()
     pdf.add_page()
