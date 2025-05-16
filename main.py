@@ -33,14 +33,11 @@ class RecordRequest(BaseModel):
 async def apply_for_record(request: RecordRequest):
     request.validate_date()
 
-    # Trigger mock payment before proceeding
-    from payments import PaymentRequest, initiate_payment
-    payment = PaymentRequest(applicant_id=request.passportNumber, amount=25.0)
-    payment_response = await initiate_payment(payment)
-
-    if payment_response["status"] != "pending":
-        raise HTTPException(status_code=400, detail="Payment initiation failed.")
-
+   # Simulate payment trigger before submission
+    payment_response = {
+        "payment_url": f"https://sandbox.paymentprovider.com/pay?ref={request.fullName}&amount=50.00",
+        "status": "pending"
+    }
    
     return {
         "applicationId": "APP-2025-001",
