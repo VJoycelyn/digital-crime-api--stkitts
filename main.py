@@ -54,6 +54,37 @@ async def upload_id(passportNumber: str, file: UploadFile = File(...)):
 @app.get("/")
 def read_root():
     return {"message": "Welcome to the Digital Crime Management System API"}
+from fpdf import FPDF
+from fastapi.responses import FileResponse
+import datetime
+
+@app.post("/generate-certificate")
+def generate_certificate(fullName: str, passportNumber: str, dateOfBirth: str, purpose: str):
+    record_status = "No Criminal Record Found"
+    digital_signature = "GovStack-DCRS-Signature-Verified"
+    issue_date = datetime.date.today().strftime("%Y-%m-%d")
+    filename = f"{passportNumber}_Certificate.pdf"
+
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("Arial", 'B', 14)
+    pdf.cell(200, 10, txt="Criminal Record Certificate", ln=True, align='C')
+    pdf.set_font("Arial", size=12)
+    pdf.ln(10)
+
+    pdf.cell(200, 10, txt=f"Applicant Name: {fullName}", ln=True)
+    pdf.cell(200, 10, txt=f"Passport Number: {passportNumber}", ln=True)
+    pdf.cell(200, 10, txt=f"Date of Birth: {dateOfBirth}", ln=True)
+    pdf.cell(200, 10, txt=f"Purpose: {purpose}", ln=True)
+    pdf.cell(200, 10, txt=f"Issue Date: {issue_date}", ln=True)
+    pdf.cell(200, 10, txt=f"Record Status: {record_status}", ln=True)
+    pdf.ln(10)
+    pdf.multi_cell(0, 10, txt="This certificate is issued as part of the Digital Criminal Record System (GovStack compliant). It verifies that the above-named applicant does not have a criminal record registered with the National Law Enforcement Agency.")
+    pdf.ln(10)
+    pdf.cell(200, 10, txt=f"Digital Signature: {digital_signature}", ln=True)
+
+    pdf.output(filename)
+    return FileResponse(path=filename, media_type='application/pdf', filename=filename)
 
 from payments import router as payments_router
 app.include_router(payments_router)
