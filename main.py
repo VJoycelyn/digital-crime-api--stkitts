@@ -34,7 +34,7 @@ async def apply_for_record(request: RecordRequest):
     request.validate_date()
 
    # Simulate payment URL generation
-        payment_url: f"https://sandbox.paymentprovider.com/pay?ref={request.fullName}&amount=10.00"
+    payment_url: f"https://sandbox.paymentprovider.com/pay?ref={request.fullName}&amount=10.00"
     
     return {
         "applicationId": "APP-2025-001",
