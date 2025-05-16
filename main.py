@@ -33,17 +33,14 @@ class RecordRequest(BaseModel):
 async def apply_for_record(request: RecordRequest):
     request.validate_date()
 
-   # Trigger mock payment
-    payment_response = {
-        "payment_url": f"https://sandbox.paymentprovider.com/pay?ref={request.fullName}&amount=10.00"
-    }
-
-   
+   # Simulate payment URL generation
+        payment_url: f"https://sandbox.paymentprovider.com/pay?ref={request.fullName}&amount=10.00"
+    
     return {
         "applicationId": "APP-2025-001",
         "status": "Received",
         "message": f"Application for {request.fullName} received successfully."
-        "payment_url": payment_response["payment_url"]
+        "payment_url":payment_url
     }
 
 @app.post("/identity/upload-id")
