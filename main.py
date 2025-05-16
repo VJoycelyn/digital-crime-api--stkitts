@@ -39,8 +39,8 @@ async def apply_for_record(request: RecordRequest):
     return {
         "applicationId": "APP-2025-001",
         "status": "Received",
-        "message": f"Application for {request.fullName} received successfully."
-        "payment_url":payment_url
+        "message": f"Application for {request.fullName} received successfully.",
+        "payment_url": payment_url
     }
 
 @app.post("/identity/upload-id")
