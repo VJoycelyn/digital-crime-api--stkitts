@@ -22,7 +22,7 @@ class RecordRequest(BaseModel):
     passportNumber: str = Field(..., pattern="^K\\d{8}$")
     dateOfBirth: str
     purpose: str
-    amount: float 
+    amount: 10.00 
 
     def validate_date(self):
         try:
