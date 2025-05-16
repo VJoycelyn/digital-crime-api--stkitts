@@ -114,6 +114,24 @@ async def check_criminal_record(passportNumber: str):
 async def check_criminal_record(passportNumber: str):
     ...
 
+from fastapi import Request
+
+API_KEY = "your-secure-admin-token"  # Replace this with your private key
+
+@app.get("/admin/view-records")
+async def view_records(request: Request):
+    # Check if user sent a valid token
+    token = request.query_params.get("token")
+    if token != API_KEY:
+        raise HTTPException(status_code=403, detail="Access Denied")
+
+    conn = sqlite3.connect("criminal_records.db")
+    cursor = conn.cursor()
+    cursor.execute("SELECT passport_number, status FROM criminal_records")
+    records = cursor.fetchall()
+    conn.close()
+
+    return {"records": [{"passportNumber": r[0], "status": r[1]} for r in records]}
 
 
 from payments import router as payments_router
