@@ -60,7 +60,14 @@ import datetime
 
 @app.post("/generate-certificate")
 def generate_certificate(fullName: str, passportNumber: str, dateOfBirth: str, purpose: str):
-    record_status = "No Criminal Record Found"
+    conn = sqlite3.connect("criminal_records.db")
+cursor = conn.cursor()
+cursor.execute("SELECT status FROM criminal_records WHERE passport_number = ?", (passportNumber,))
+result = cursor.fetchone()
+conn.close()
+
+record_status = result[0] if result else "No Criminal Record Found"
+
     digital_signature = "GovStack-DCRS-Signature-Verified"
     issue_date = datetime.date.today().strftime("%Y-%m-%d")
     filename = f"{passportNumber}_Certificate.pdf"
@@ -85,6 +92,31 @@ def generate_certificate(fullName: str, passportNumber: str, dateOfBirth: str, p
 
     pdf.output(filename)
     return FileResponse(path=filename, media_type='application/pdf', filename=filename)
+
+
+import sqlite3  # make sure this is also at the top of the file
+
+@app.post("/records/check")
+async def check_criminal_record(passportNumber: str):
+    conn = sqlite3.connect("criminal_records.db")
+    cursor = conn.cursor()
+    cursor.execute("SELECT status FROM criminal_records WHERE passport_number = ?", (passportNumber,))
+    result = cursor.fetchone()
+    conn.close()
+
+    if result:
+        return {"passportNumber": passportNumber, "record_status": result[0]}
+    else:
+        return {"passportNumber": passportNumber, "record_status": "Not Found"}
+
+@app.post("/records/check")
+async def check_criminal_record(passportNumber: str):
+    ...
+
+# This should follow after
+from payments import router as payments_router
+app.include_router(payments_router)
+
 
 from payments import router as payments_router
 app.include_router(payments_router)
