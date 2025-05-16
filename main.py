@@ -33,11 +33,11 @@ class RecordRequest(BaseModel):
 async def apply_for_record(request: RecordRequest):
     request.validate_date()
 
-   # Simulate payment trigger before submission
+   # Trigger mock payment
     payment_response = {
-        "payment_url": f"https://sandbox.paymentprovider.com/pay?ref={request.fullName}&amount=50.00",
-        "status": "pending"
+        "payment_url": f"https://sandbox.paymentprovider.com/pay?ref={request.fullName}&amount=10.00"
     }
+
    
     return {
         "applicationId": "APP-2025-001",
