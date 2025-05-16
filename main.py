@@ -113,9 +113,6 @@ async def check_criminal_record(passportNumber: str):
 async def check_criminal_record(passportNumber: str):
     ...
 
-# This should follow after
-from payments import router as payments_router
-app.include_router(payments_router)
 
 
 from payments import router as payments_router
