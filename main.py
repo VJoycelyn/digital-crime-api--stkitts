@@ -43,6 +43,6 @@ async def upload_id(passportNumber: str, file: UploadFile = File(...)):
         "content_type": file.content_type,
         "message": "File uploaded successfully (simulation)."
     }
-    @app.get("/")
+@app.get("/")
 def read_root():
     return {"message": "Welcome to the Digital Crime Management System API"}
