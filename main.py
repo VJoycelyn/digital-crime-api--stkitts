@@ -46,3 +46,7 @@ async def upload_id(passportNumber: str, file: UploadFile = File(...)):
 @app.get("/")
 def read_root():
     return {"message": "Welcome to the Digital Crime Management System API"}
+
+from payments import router as payments_router
+app.include_router(payments_router)
+
